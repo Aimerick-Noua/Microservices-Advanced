@@ -2,9 +2,12 @@ package com.noua.accounts.controller;
 
 import com.noua.accounts.constants.AccountsConstants;
 import com.noua.accounts.dto.CustomerDto;
+import com.noua.accounts.dto.ErrorResponseDto;
 import com.noua.accounts.dto.ResponseDto;
 import com.noua.accounts.service.IAccountsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,10 +39,16 @@ public class AccountsController {
             summary = "Create Account REST API",
             description = "REST API to create a new Customer & Account inside our bank"
     )
-    @ApiResponse(
-            responseCode = "201",
-            description = "Http Status Created"
-    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Http Status Created"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status Internal Server Error"
+            )
+    })
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
     iAccountsService.createAccount(customerDto);
@@ -52,10 +61,16 @@ public class AccountsController {
             summary = "Fetch Account REST API",
             description = "REST API to fetch Customer & Account inside our bank"
     )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Http Status OK"
-    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status Internal Server Error"
+            )
+    })
     @GetMapping("/fetch")
     public ResponseEntity<CustomerDto> fetChAccountDetails(@RequestParam
                                                                @Pattern(regexp = "^\\d{10}$", message = "Mobile number must be 10 digits")
@@ -76,8 +91,17 @@ public class AccountsController {
                    description = "Http Status OK"
            ),
            @ApiResponse(
+                   responseCode = "417",
+                   description = "Expectation Failed"
+           ),
+           @ApiResponse(
                    responseCode = "500",
-                   description = "Http Status Internal Server Error"
+                   description = "Http Status Internal Server Error",
+                   content = @Content(
+                           schema = @Schema(
+                                   implementation = ErrorResponseDto.class
+                           )
+                   )
            )
    })
     @PutMapping("/update")
@@ -89,8 +113,8 @@ public class AccountsController {
                     .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }else {
             return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDto(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_UPDATE));
         }
     }
 
@@ -102,6 +126,10 @@ public class AccountsController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Http Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "417",
+                    description = "Expectation Failed"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -119,8 +147,8 @@ public class AccountsController {
                     .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }else {
             return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDto(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
         }
     }
 
