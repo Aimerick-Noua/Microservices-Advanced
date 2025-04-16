@@ -1,6 +1,7 @@
 package com.noua.accounts.controller;
 
 import com.noua.accounts.constants.AccountsConstants;
+import com.noua.accounts.dto.AccountsContactInfoDto;
 import com.noua.accounts.dto.CustomerDto;
 import com.noua.accounts.dto.ErrorResponseDto;
 import com.noua.accounts.dto.ResponseDto;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountsController {
     private final IAccountsService iAccountsService;
     private final Environment environment;
+    private final AccountsContactInfoDto accountsContactInfoDto;
 
     @Value("${build.version}")
     private String buildVersion;
@@ -191,6 +193,25 @@ public class AccountsController {
     @GetMapping("/java-version")
     public ResponseEntity<String>getJavaVersion(){
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Get Contact Info",
+            description = "Get contact Info that is deployed in this microservice"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status Internal Server Error"
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto>getContactInfo(){
+        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDto);
     }
 
 }
