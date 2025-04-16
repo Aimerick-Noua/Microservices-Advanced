@@ -1,0 +1,18 @@
+
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  version: "2.0"
+
+
+accounts:
+  message: "Welcome to Bank QA related local APIs"
+  contactDetails:
+    name: "Smith - QA Lead"
+    email: "Smith@banck.com"
+  onCallSupport:
+    - (534) 555-1234
+    - (534) 555-1234

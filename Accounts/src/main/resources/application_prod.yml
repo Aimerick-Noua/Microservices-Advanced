@@ -1,0 +1,18 @@
+
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+build:
+  version: "1.0"
+
+
+accounts:
+  message: "Welcome to Bank prod related local APIs"
+  contactDetails:
+    name: "nova - Developer"
+    email: "nova@doe.com"
+  onCallSupport:
+    - (237) 555-1234
+    - (237) 555-1234
