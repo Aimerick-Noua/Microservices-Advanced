@@ -101,7 +101,7 @@
 				<version>3.3.2</version>
 				<configuration>
 					<to>
-						<image>aimerick/${project.artifactId}:s4</image>
+						<image>aimerick/${project.artifactId}:s6</image>
 					</to>
 				</configuration>
 			</plugin>
